@@ -1,20 +1,5 @@
 # Returning a JSON response : Code-Along
 
-## Learning Goals
-
-- Use a dictionary to store row data from a query.
-- Implement a Flask application that returns `JSON` in the response.
-
----
-
-## Key Vocab
-
-- **JSON**: JavaScript Object Notation, is a _data interchange format_ often
-  used for transmitting data between a client and a server.
-- **Dictionary**: A data structure used to store data values in key:value pairs.
-
----
-
 ## Introduction
 
 We've seen how to generate a server response as a string containing `HTML`.
@@ -25,53 +10,6 @@ JSON data.
 
 In this lesson, we'll adapt our Flask application to return `JSON` in the
 response for each view.
-
----
-
-## Setup
-
-This lesson is a code-along, so fork and clone the repo.
-
-Run `pipenv install` to install the dependencies and `pipenv shell` to enter
-your virtual environment before running your code.
-
-```console
-$ pipenv install
-$ pipenv shell
-```
-
-Change into the `server` directory and configure the `FLASK_APP` and
-`FLASK_RUN_PORT` environment variables:
-
-```console
-$ cd server
-$ export FLASK_APP=app.py
-$ export FLASK_RUN_PORT=5555
-```
-
-The commands `flask db init` and `flask db migrate` have already been run. Run
-the following command to initialize the database from the existing migration
-script:
-
-```console
-$ flask db upgrade head
-```
-
-Run the following command to seed the table with sample data:
-
-```command
-$ python seed.py
-```
-
-Use the Flask shell to confirm 10 random random pets have been added to the
-database (your results will differ):
-
-```command
-$ flask shell
->>> Pet.query.all()
-[<Pet 1, Robin, Hamster>, <Pet 2, Gwendolyn, Dog>, <Pet 3, Michael, Turtle>, <Pet 4, Austin, Cat>, <Pet 5, Jennifer, Dog>, <Pet 6, Jenna, Dog>, <Pet 7, Crystal, Chicken>, <Pet 8, Jacob, Cat>, <Pet 9, Nicole, Chicken>, <Pet 10, Trevor, Turtle>]
->>>
-```
 
 ## Review: What is JSON Again?
 
@@ -103,7 +41,67 @@ single line like above, we may see JSON like this:
 }
 ```
 
-## Returning a JSON response from a Flask view
+## Tools & Resources
+
+- [Python Dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
+- [JSON](https://www.json.org/json-en.html)
+
+## Setup
+
+This lesson is a code-along, so fork and clone the repo.
+
+Run `pipenv install` to install the dependencies and `pipenv shell` to enter
+your virtual environment before running your code.
+
+```console
+$ pipenv install
+$ pipenv shell
+```
+
+Change into the `server` directory and configure the `FLASK_APP` and
+`FLASK_RUN_PORT` environment variables:
+
+```console
+$ cd server
+$ export FLASK_APP=app.py
+$ export FLASK_RUN_PORT=5555
+```
+
+### Task 1: Define the Problem
+
+### Task 2: Determine the Design
+
+### Task 3: Develop, Test, and Refine the Code
+
+#### Step 1: Intialize the Database
+
+The commands `flask db init` and `flask db migrate` have already been run. Run
+the following command to initialize the database from the existing migration
+script:
+
+```console
+$ flask db upgrade head
+```
+
+#### Step 2: Seed the Database
+
+Run the following command to seed the table with sample data:
+
+```command
+$ python seed.py
+```
+
+Use the Flask shell to confirm 10 random random pets have been added to the
+database (your results will differ):
+
+```command
+$ flask shell
+>>> Pet.query.all()
+[<Pet 1, Robin, Hamster>, <Pet 2, Gwendolyn, Dog>, <Pet 3, Michael, Turtle>, <Pet 4, Austin, Cat>, <Pet 5, Jennifer, Dog>, <Pet 6, Jenna, Dog>, <Pet 7, Crystal, Chicken>, <Pet 8, Jacob, Cat>, <Pet 9, Nicole, Chicken>, <Pet 10, Trevor, Turtle>]
+>>>
+```
+
+#### Step 3: Returning a JSON response from a Flask view
 
 Take a look at `server/app.py`. The `index()` view returns a string containing
 HTML, while the `demo_json()` view returns a JSON formatted string.
@@ -392,7 +390,14 @@ if __name__ == '__main__':
     app.run(port=5555, debug=True)
 ```
 
-## Resources
+### Task 4: Document and Maintain
 
-- [Python Dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
-- [JSON](https://www.json.org/json-en.html)
+Best Practice documentation steps:
+* Add comments to the code to explain purpose and logic, clarifying intent and functionality of your code to other developers.
+* Update README text to reflect the functionality of the application following https://makeareadme.com. 
+  * Add screenshot of completed work included in Markdown in README.
+* Delete any stale branches on GitHub
+* Remove unnecessary/commented out code
+* If needed, update git ignore to remove sensitive data
+
+## Considerations
