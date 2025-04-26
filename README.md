@@ -43,6 +43,7 @@ single line like above, we may see JSON like this:
 
 ## Tools & Resources
 
+- [GitHub Repo](https://github.com/learn-co-curriculum/flask-sqlalchemy-json-response-technical-lesson)
 - [Python Dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
 - [JSON](https://www.json.org/json-en.html)
 
@@ -101,7 +102,7 @@ $ flask shell
 >>>
 ```
 
-#### Step 3: Returning a JSON response from a Flask view
+#### Step 3: Return a JSON response from a Flask view
 
 Take a look at `server/app.py`. The `index()` view returns a string containing
 HTML, while the `demo_json()` view returns a JSON formatted string.
@@ -157,7 +158,7 @@ Open a browser window and navigate to
 [http://127.0.0.1:5555/demo_json](http://127.0.0.1:5555/demo_json). The browser
 displays the JSON data:
 
-![demo json in response](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/demo_json.png)
+![demo json in response](/assets/demo_json.png)
 
 Notice the response does not include the surrounding single quotes. While the
 Python program needs quotes to define a string literal, the web browser displays
@@ -201,11 +202,7 @@ def demo_json():
     return make_response(pet_dict, 200)
 ```
 
-Let's refresh the web page in the browser.
-
-![demo json response from dictionary](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/demo_dict.png)
-
-Notice the browser displays JSON (double quotes) even though the dictionary uses
+Let's refresh the web page in the browser. Notice the browser displays JSON (double quotes) even though the dictionary uses
 single quotes.
 
 When a dictionary is passed into `make_response()`, Flask automatically
@@ -223,6 +220,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 ```
+
+#### Step 4: Update View to Return Data From Database
 
 Now let's evolve the view to get the first pet from the `pets` table and use the
 query result for the dictionary values.
@@ -242,9 +241,7 @@ def demo_json():
 ```
 
 Refresh the web page. Assuming you seeded the database table, you should see a
-random pet name and species:
-
-![demo json response from query](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/demo_query.png)
+random pet name and species.
 
 So now we know how to query a database, create a dictionary from the query
 result, and pass the dictionary to `make_response()` to produce a JSON response.
@@ -252,6 +249,8 @@ result, and pass the dictionary to `make_response()` to produce a JSON response.
 Let's evolve each route from the previous lesson to produce a JSON response.
 Keep in mind we might eventually create a React front-end client that would
 create components using the JSON data.
+
+#### Step 5: Create Index Route
 
 Update the `index()` view as shown. The response body will consist of a key
 named `message` and a value `'Welcome to the pet directory!'`.
@@ -263,9 +262,9 @@ def index():
     return make_response(body, 200)
 ```
 
-Let's test the route with http://127.0.0.1:5555/.
+Let's test the route with http://127.0.0.1:5555/. You should see a message with "Welcome to the pet directory!"
 
-![index route](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/index.png)
+#### Step 6: Create Route by ID
 
 Let's add a view to get pet data for a given id value. The code is similar to
 the example `demo_json()` view, except the route takes the id as a parameter.
@@ -288,14 +287,15 @@ def pet_by_id(id):
     return make_response(body, status)
 ```
 
-Test the new view with a valid id using the URL http://127.0.0.1:5555/pets/5.
-
-![get pet with valid id 5](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/pets_5.png)
+Test the new view with a valid id using the URL http://127.0.0.1:5555/pets/5. 
+Verify that you get the correct pet's id, name, and species.
 
 Test the view with a non-existent id such the URL
 http://127.0.0.1:5555/pets/1000.
 
-![get pet with invalid id 1000](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/pets_1000.png)
+You should see a message letting you know pet 1000 was not found.
+
+#### Step 7: Create Filter View
 
 Finally, let's add a view to get pets based on species. Since there might be
 several pets for a given species, we need to use a loop to create a dictionary
@@ -320,21 +320,13 @@ def pet_by_species(species):
 Test the new view with various values for species such as Dog using the URL
 http://127.0.0.1:5555/species/Dog.
 
-![get pets by species](https://curriculum-content.s3.amazonaws.com/7159/python-p4-v2-flask-sqlalchemy/species_dog.png)
+You should see the count and all pets listed.
 
-## Conclusion
-
-A Flask application can return a result in many formats, include JSON. A
-dictionary is a key/value data structure that looks similar to JSON, yet it is
-not a string. Flask automatically transforms a dictionary to JSON if one is
-passed to the `make_response()` function. By returning JSON instead of HTML, a
-client application can transform the server response into a variety of user
-interface components.
-
-## Solution
+#### Step 8: Verify your Code
 
 We can delete the `demo_json()` view since `pet_by_id()` covers similar
-functionality but with a route parameter and error handling.
+functionality but with a route parameter and error handling. Your final 
+code should look like:
 
 ```py
 # server/app.py
@@ -390,6 +382,18 @@ if __name__ == '__main__':
     app.run(port=5555, debug=True)
 ```
 
+#### Step 9: Commit, Push, and Merge to GitHub
+
+* Commit and push your code:
+
+```bash
+git add .
+git commit -m "create pets table with some started data"
+git push
+```
+
+* If you created a separate feature branch, remember to open a PR on main and merge.
+
 ### Task 4: Document and Maintain
 
 Best Practice documentation steps:
@@ -399,5 +403,14 @@ Best Practice documentation steps:
 * Delete any stale branches on GitHub
 * Remove unnecessary/commented out code
 * If needed, update git ignore to remove sensitive data
+
+## Summary
+
+A Flask application can return a result in many formats, include JSON. A
+dictionary is a key/value data structure that looks similar to JSON, yet it is
+not a string. Flask automatically transforms a dictionary to JSON if one is
+passed to the `make_response()` function. By returning JSON instead of HTML, a
+client application can transform the server response into a variety of user
+interface components.
 
 ## Considerations
