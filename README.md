@@ -70,7 +70,52 @@ $ export FLASK_RUN_PORT=5555
 
 ### Task 1: Define the Problem
 
+In earlier lessons, your Flask application returned simple HTML responses, 
+great for quick prototypes but not scalable for real-world applications.
+
+Modern web applications (especially when working with frontend frameworks 
+like React, Vue, or mobile apps) expect JSON responses, not static HTML. 
+JSON responses are essential for:
+
+* Exchanging structured data between server and client.
+* Dynamically updating user interfaces without reloading pages.
+* Building APIs that other applications can consume.
+
+If your application only sends static HTML, it can’t communicate effectively 
+with frontend apps, mobile apps, or external systems.
+
+Your Challenge is to learn how to format and send JSON responses directly 
+from Flask views by:
+
+* Querying the database.
+* Structuring results as Python dictionaries or arrays of dictionaries.
+* Returning JSON responses with the correct HTTP status codes.
+
+By doing so, you'll build future-proof, flexible applications that can easily 
+power full-stack apps, SPAs, or even mobile front-ends.
+
 ### Task 2: Determine the Design
+
+The design for returning JSON responses in Flask will follow these principles:
+
+* Query Data from the Database:
+    * Use SQLAlchemy queries (`filter()`, `filter_by()`, `.first()`, `.all()`) to retrieve the necessary data from the database.
+* Structure Data as Python Dictionaries:
+    * Convert model instances into plain dictionaries (e.g., `{ "id": pet.id, "name": pet.name }`) that map neatly to JSON structure.
+* Use Flask’s `make_response()`:
+    * Wrap the dictionary in a call to `make_response()` — Flask will automatically serialize it into JSON under the hood.
+* Set JSON Formatting Settings:
+    * Adjust `app.json.compact = False` to make responses easier to read during development.
+* Error Handling:
+    * Return different JSON responses and appropriate HTTP status codes (e.g., 404 for "Pet not found").
+* Consistency Across Views:
+    * All endpoints should consistently return structured JSON responses, whether for a single record, a collection of records, or an error message.
+
+Following this design will ensure that:
+
+* Your server-side data is easily consumable by a frontend.
+* Your app is scalable and consistent.
+* You’re building habits that match real-world API design standards.
 
 ### Task 3: Develop, Test, and Refine the Code
 
@@ -414,3 +459,24 @@ client application can transform the server response into a variety of user
 interface components.
 
 ## Considerations
+
+When designing views that return JSON responses, keep these important factors 
+in mind:
+
+* Data Serialization:
+    * Only simple types (strings, numbers, arrays, dictionaries) can be directly converted to JSON.
+    * You can't return a model instance (like Pet) directly — you must first extract its attributes into a dictionary.
+* Error Messaging:
+    * Always provide clear, structured error messages (in JSON format) with appropriate status codes like 404 or 400. Avoid sending back plain text error pages.
+* Security:
+    * Be careful not to expose sensitive fields (e.g., passwords, internal IDs) when constructing your JSON dictionaries.
+* Performance:
+    * If returning large amounts of data, consider pagination (sending only part of the dataset at a time) to avoid slow responses.
+* Consistency and Predictability:
+    * Always return a consistent JSON structure for each endpoint — this is critical if your app grows or if frontend developers are relying on your API.
+* Extensibility:
+    * Building JSON responses now prepares you to create a REST API later — with very little additional work.
+
+Understanding how to format and deliver data as JSON is a foundational skill 
+for backend developers — it unlocks the ability to build powerful, connected, 
+dynamic applications.
