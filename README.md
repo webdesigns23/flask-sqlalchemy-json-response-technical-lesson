@@ -1,4 +1,4 @@
-# Returning a JSON response : Code-Along
+# Technical Lesson: Returning a JSON response
 
 ## Introduction
 
